@@ -7,12 +7,13 @@
 //
 
 #import "FLXAppDelegate.h"
+#import <CheckMate/CheckMate.h>
 
 @implementation FLXAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    [CheckMate initializeFramework:@"f24bd71f0f486ddf9eb31aec365065ad"];
     return YES;
 }
 							

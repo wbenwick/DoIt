@@ -8,9 +8,12 @@
 
 #import "FLXViewController.h"
 
-@interface FLXViewController () <UITableViewDataSource>
+@interface FLXViewController () <UITableViewDelegate, UITableViewDataSource>
+{
+    NSMutableArray *items;
+    
+}
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
-
 
 @end
 
@@ -19,7 +22,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
+    items = [NSMutableArray arrayWithObjects:@"One", @"Two", @"Three",nil];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -30,12 +35,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    UITableViewCell *cell;
+    NSLog(@"row = %i", indexPath.row);
+    cell = [tableView dequeueReusableCellWithIdentifier:@"myReuseIdentifier"];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@", items[indexPath.row]];
+    
+    return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return [items count];
 }
+
+
 
 @end
