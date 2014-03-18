@@ -14,6 +14,8 @@
     
 }
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
+@property (strong, nonatomic) IBOutlet UIButton *myAddButton;
+@property (strong, nonatomic) IBOutlet UITextField *myTextField;
 
 @end
 
@@ -24,8 +26,16 @@
     [super viewDidLoad];
 
     items = [NSMutableArray arrayWithObjects:@"One", @"Two", @"Three",nil];
+    self.myTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.myTableView.bounds.size.width, 0.01f)];
 
+    
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+    tapGestureRecognizer.cancelsTouchesInView = NO;
+    [self.myTableView addGestureRecognizer:tapGestureRecognizer];
+    
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -48,6 +58,25 @@
     return [items count];
 }
 
+- (IBAction)onAddButtonPressed:(id)sender {
 
+    NSString *myText = self.myTextField.text;
+    myText = [myText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if (![myText isEqualToString:@""]) {
+        [items addObject:[NSString stringWithString:myText]];
+        self.myTextField.text=@"";
+        [self.myTableView reloadData];
+        [self.myTextField resignFirstResponder];
+    }
+}
+
+- (void)dismissKeyboard {
+    
+    NSLog(@"dismissKeyboard");
+    
+    [self.myTextField resignFirstResponder];
+    
+}
 
 @end
