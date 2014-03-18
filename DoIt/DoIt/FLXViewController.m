@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 FileLogix. All rights reserved.
 //
 
-#import "FLXViewController.h" <UITableViewDataSource>
+#import "FLXViewController.h"
 
-@interface FLXViewController ()
+@interface FLXViewController () <UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
 
 
