@@ -11,6 +11,7 @@
 @interface FLXViewController () <UITableViewDelegate, UITableViewDataSource>
 {
     NSMutableArray *items;
+    BOOL isEditModeEnabled;
     
 }
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
@@ -28,10 +29,11 @@
     items = [NSMutableArray arrayWithObjects:@"One", @"Two", @"Three",nil];
     self.myTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.myTableView.bounds.size.width, 0.01f)];
 
+    isEditModeEnabled = 0;
     
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-    tapGestureRecognizer.cancelsTouchesInView = NO;
-    [self.myTableView addGestureRecognizer:tapGestureRecognizer];
+//    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+//    tapGestureRecognizer.cancelsTouchesInView = NO;
+//    [self.myTableView addGestureRecognizer:tapGestureRecognizer];
     
 }
 
@@ -47,7 +49,7 @@
 {
     UITableViewCell *cell;
     NSLog(@"row = %i", indexPath.row);
-    cell = [tableView dequeueReusableCellWithIdentifier:@"myReuseIdentifier"];
+    cell = [tableView dequeueReusableCellWithIdentifier:@"MyReuseIdentifier"];
     cell.textLabel.text = [NSString stringWithFormat:@"%@", items[indexPath.row]];
     
     return cell;
@@ -77,6 +79,38 @@
     
     [self.myTextField resignFirstResponder];
     
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    UITableViewCell *cell;
+    cell = [tableView cellForRowAtIndexPath:indexPath];
+
+    if (isEditModeEnabled) {
+        
+        [items removeObjectAtIndex:indexPath.row];
+        [self.myTableView reloadData];
+    }
+    else {
+        cell.textLabel.textColor = [UIColor greenColor];
+    }
+}
+
+- (IBAction)onEditButtonPressed:(UIButton*)sender {
+    
+    NSLog(@"Edit Mode: %i",isEditModeEnabled);
+    
+    if (isEditModeEnabled) {
+        [sender setTitle:@"Edit" forState:UIControlStateNormal];
+        [sender setTitle:@"Edit" forState:UIControlStateHighlighted];
+        isEditModeEnabled = NO;
+    }
+    else {
+        [sender setTitle:@"Done" forState:UIControlStateNormal];
+        [sender setTitle:@"Done" forState:UIControlStateHighlighted];
+        [self.myTextField resignFirstResponder];
+        isEditModeEnabled = 1;
+    }
 }
 
 @end
